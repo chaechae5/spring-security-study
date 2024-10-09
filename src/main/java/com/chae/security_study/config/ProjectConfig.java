@@ -1,5 +1,7 @@
 package com.chae.security_study.config;
 
+import com.chae.security_study.security.CustomAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,6 +19,10 @@ import org.springframework.security.web.SecurityFilterChain;
 * */
 @Configuration // 클래스를 구성 클래스로 표시
 public class ProjectConfig {
+
+    @Autowired
+    private CustomAuthenticationProvider authenticationProvider;
+
 
     /*
     * 콘솔에 자동 생성된 암호가 출력되지 않음 -> 컨텍스트에 추가된 UserDetailService 형식의 인스턴스를 이용함.
@@ -45,6 +51,7 @@ public class ProjectConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .authenticationProvider(authenticationProvider) // authenticationProvider 등록
                 // HTTP Basic 인증을 활성화합니다.
                 .httpBasic(Customizer.withDefaults()) // Deprecated된 httpBasic() 대신 사용
                 // 모든 요청에 대해 인증 없이 접근 허용
