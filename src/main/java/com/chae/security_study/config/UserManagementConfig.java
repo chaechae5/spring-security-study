@@ -1,17 +1,20 @@
 package com.chae.security_study.config;
 
 import com.chae.security_study.security.CustomAuthenticationProvider;
+import com.chae.security_study.service.InMemoryUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.List;
 
 /*
 * UserDetailService 구현을 재정의하는 방법을 알아보기 위한 예제
@@ -29,15 +32,11 @@ public class UserManagementConfig {
     * */
     @Bean // 반환된 인스턴스를 스프링 컨텍스트에 빈으로 추가하도록 스프링에 지시
     public UserDetailsService userDetailsService(){
-        var userDetailsService = new InMemoryUserDetailsManager(); //var : 로컬 선언에만 이용, 변수 형식 숨김
 
-        var user = User.withUsername("chae")
-                .password("test")
-                .authorities("read")
-                .build();
-        userDetailsService.createUser(user); //userDetailsService에서 관리하도록 사용자 추가
+        UserDetails u = new User("chae", "test",List.of(()->"read"));
+        List<UserDetails> users = List.of(u);
 
-        return userDetailsService;
+        return new InMemoryUserDetailsService(users);
     }
 
     @Bean
@@ -45,20 +44,4 @@ public class UserManagementConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    /*
-    * spring Security 5.7부터는 WebSecurityConfigurerAdapter deprecated
-    * */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authenticationProvider(authenticationProvider) // authenticationProvider 등록
-                // HTTP Basic 인증을 활성화합니다.
-                .httpBasic(Customizer.withDefaults()) // Deprecated된 httpBasic() 대신 사용
-                // 모든 요청에 대해 인증 없이 접근 허용
-                .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().permitAll()
-                );
-
-        return http.build();
-    }
 }
