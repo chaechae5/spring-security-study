@@ -13,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
+import javax.sql.DataSource;
 import java.util.List;
 
 /*
@@ -30,13 +32,28 @@ public class UserManagementConfig {
     /*
     * 콘솔에 자동 생성된 암호가 출력되지 않음 -> 컨텍스트에 추가된 UserDetailService 형식의 인스턴스를 이용함.
     * */
+//    @Bean // 반환된 인스턴스를 스프링 컨텍스트에 빈으로 추가하도록 스프링에 지시
+//    public UserDetailsService userDetailsService(){
+//
+//        UserDetails u = new User("chae", "test",List.of(()->"read"));
+//        List<UserDetails> users = List.of(u);
+//
+//        return new InMemoryUserDetailsService(users);
+//    }
+
     @Bean // 반환된 인스턴스를 스프링 컨텍스트에 빈으로 추가하도록 스프링에 지시
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService(DataSource datasource){
 
-        UserDetails u = new User("chae", "test",List.of(()->"read"));
-        List<UserDetails> users = List.of(u);
+        //1. db 컬럼명 그대로 쓰는경우
+//        return new JdbcUserDetailsManager(datasource);
 
-        return new InMemoryUserDetailsService(users);
+        //2. db 컬럼명 재정의하는 방법
+        String usersByUsernameQuery = "select username, password, enabled from spring.users where username = ?";
+        String authsByUserQuery = "select username, authority from spring.authorities where username = ?";
+        var userDetailsManager = new JdbcUserDetailsManager(datasource);
+        userDetailsManager.setUsersByUsernameQuery(usersByUsernameQuery);
+        userDetailsManager.setAuthoritiesByUsernameQuery(authsByUserQuery);
+        return userDetailsManager;
     }
 
     @Bean
