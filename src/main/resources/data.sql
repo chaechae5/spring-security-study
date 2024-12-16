@@ -1,2 +1,4 @@
-INSERT INTO `spring`.`authorities`(username, authority) VALUES ( 'chae', 'write');
-INSERT INTO `spring`.`users`(username, password, enabled) VALUES ('chae', '12345', 1);
+INSERT  INTO users(id, username, password, algorithm) VALUES ( 1,'chae', '$2b$12$WJcmOvgNQZ6m65E32vAWke8oYIQnpOEjC0bfMC/F5bPX4x2Ex3Mky', 'BCRYPT');
+INSERT  INTO authorities(id, name, "user") VALUES (1, 'READ', 1);
+INSERT  INTO authorities(id, name, "user") VALUES (2, 'WRITE', 1);
+INSERT  INTO product(id, name, price, currency) VALUES (1, 'Chocolate', '10','USD');
