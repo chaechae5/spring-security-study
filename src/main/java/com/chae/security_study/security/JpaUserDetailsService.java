@@ -1,4 +1,4 @@
-package com.chae.security_study.service;
+package com.chae.security_study.security;
 
 import com.chae.security_study.entity.Users;
 import com.chae.security_study.model.CustomUserDetails;

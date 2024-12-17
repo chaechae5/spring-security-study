@@ -1,5 +1,6 @@
 package com.chae.security_study.entity;
 
+import com.chae.security_study.entity.enums.EncryptionAlgorithm;
 import jakarta.persistence.*;
 
 import java.util.List;
