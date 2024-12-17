@@ -1,11 +1,6 @@
 package com.chae.security_study.entity;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 public class Authority{
@@ -16,9 +11,9 @@ public class Authority{
 
     private String name;
 
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id")
     @ManyToOne
-    private User user;
+    private Users users;
 
     public Integer getId() {
         return id;
@@ -28,8 +23,8 @@ public class Authority{
         return name;
     }
 
-    public User getUser() {
-        return user;
+    public Users getUser() {
+        return users;
     }
 
     public void setId(Integer id) {
@@ -40,7 +35,7 @@ public class Authority{
         this.name = name;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Users users) {
+        this.users = users;
     }
 }

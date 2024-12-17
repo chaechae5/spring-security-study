@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private EncryptionAlgorithm algorithm;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Authority> authorities;
 
     public Integer getId() {

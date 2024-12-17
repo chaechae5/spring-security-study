@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS authorities (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(45) NOT NULL,
-    "user" INT NOT NULL,
+    `user_id` INT NOT NULL,
     PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS product (

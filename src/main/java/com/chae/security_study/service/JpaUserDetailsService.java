@@ -1,6 +1,6 @@
 package com.chae.security_study.service;
 
-import com.chae.security_study.entity.User;
+import com.chae.security_study.entity.Users;
 import com.chae.security_study.model.CustomUserDetails;
 import com.chae.security_study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class JpaUserDetailsService implements UserDetailsService {
                 () -> new UsernameNotFoundException(
                         "Problem during authentication!");
 
-        User u = userRepository
+        Users u = userRepository
                 .findUserByUsername(username)
                 .orElseThrow(s);
 

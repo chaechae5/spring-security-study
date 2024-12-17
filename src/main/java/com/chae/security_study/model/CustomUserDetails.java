@@ -1,29 +1,28 @@
 package com.chae.security_study.model;
 
-import com.chae.security_study.entity.User;
+import com.chae.security_study.entity.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private final User user;
+    private final Users users;
 
-    public CustomUserDetails(User user){
-        this.user = user;
+    public CustomUserDetails(Users users){
+        this.users = users;
     }
 
-    public final User getUser(){
-        return user;
+    public final Users getUser(){
+        return users;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities().stream()
+        return users.getAuthorities().stream()
                 .map(a -> new SimpleGrantedAuthority(
                         a.getName()))
                 .collect(Collectors.toList());
@@ -31,12 +30,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return users.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return users.getUsername();
     }
 
     @Override
