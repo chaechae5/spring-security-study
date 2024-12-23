@@ -1,5 +1,6 @@
 package com.chae.security_study.config;
 
+import com.chae.security_study.filter.AuthenticationLoggingFilter;
 import com.chae.security_study.filter.RequestValidationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +15,15 @@ public class ProjectConfig {
     @Bean //configure-> filterChain
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(
+                        new RequestValidationFilter(),
+                        BasicAuthenticationFilter.class)
+                .addFilterAfter(
+                        new AuthenticationLoggingFilter(),
+                BasicAuthenticationFilter.class)
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+        ;
 
 
         return http.build();
