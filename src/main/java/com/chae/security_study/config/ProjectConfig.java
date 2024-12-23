@@ -2,6 +2,8 @@ package com.chae.security_study.config;
 
 import com.chae.security_study.filter.AuthenticationLoggingFilter;
 import com.chae.security_study.filter.RequestValidationFilter;
+import com.chae.security_study.filter.StaticKeyAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,14 +14,13 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class ProjectConfig {
 
 
-    @Bean //configure-> filterChain
+    @Autowired
+    private StaticKeyAuthenticationFilter filter;
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(
-                        new RequestValidationFilter(),
-                        BasicAuthenticationFilter.class)
-                .addFilterAfter(
-                        new AuthenticationLoggingFilter(),
+                .addFilterAt(filter,
                 BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .anyRequest().permitAll()
